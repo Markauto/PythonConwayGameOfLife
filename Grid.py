@@ -10,18 +10,21 @@ class Grid:
     cells = []
     cellSize = (20, 20)
 
+    widthOffset = 0
+    heightOffset = 0
+
     def create_grid(self):
-        rectPosX = 0
+        rect_pos_x = self.widthOffset
         for x in range(self.width):
-            rectPosX += self.cellSize[0]
-            rectPosY = 0
-            cellColumns = []
+            rect_pos_y = self.heightOffset
+            cell_columns = []
             for y in range(self.height):
-                rectPosY += self.cellSize[1]
-                newCell = Cell.Cell()
-                newCell.rectangle = pygame.Rect(rectPosX, rectPosY, self.cellSize[0], self.cellSize[1])
-                cellColumns.append(newCell)
-            self.cells.append(cellColumns)
+                new_cell = Cell.Cell()
+                new_cell.rectangle = pygame.Rect(rect_pos_x, rect_pos_y, self.cellSize[0], self.cellSize[1])
+                cell_columns.append(new_cell)
+                rect_pos_y += self.cellSize[1]
+            self.cells.append(cell_columns)
+            rect_pos_x += self.cellSize[0]
 
     def draw_grid(self, surface):
         for column in self.cells:
@@ -38,38 +41,38 @@ class Grid:
         time.sleep(.1)
         for x in range(len(self.cells)):
             for y in range(len(self.cells[x])):
-                cellNeighbors = self.get_cell_neighbors((x, y))
+                cell_neighbors = self.get_cell_neighbors((x, y))
                 cell = self.cells[x][y]
-                numberOfAliveNeighbors = len([aliveNeighbor for aliveNeighbor in cellNeighbors if aliveNeighbor.alive])
-                if numberOfAliveNeighbors < 2:
+                number_of_alive_neighbors = len([aliveNeighbor for aliveNeighbor in cell_neighbors if aliveNeighbor.alive])
+                if number_of_alive_neighbors < 2:
                     cell.alive = False
                     continue
-                if numberOfAliveNeighbors > 3:
+                if number_of_alive_neighbors > 3:
                     cell.alive = False
                     continue
-                if not cell.alive and numberOfAliveNeighbors == 3:
+                if not cell.alive and number_of_alive_neighbors == 3:
                     cell.alive = True
                     continue
 
     def get_cell_neighbors(self, point):
         x = point[0]
         y = point[1]
-        cellNeighbors = []
-        self.append_cell_to_list((x - 1, y - 1), cellNeighbors)
-        self.append_cell_to_list((x, y - 1), cellNeighbors)
-        self.append_cell_to_list((x - 1, y), cellNeighbors)
-        self.append_cell_to_list((x + 1, y + 1), cellNeighbors)
-        self.append_cell_to_list((x, y + 1), cellNeighbors)
-        self.append_cell_to_list((x + 1, y), cellNeighbors)
-        self.append_cell_to_list((x + 1, y - 1), cellNeighbors)
-        self.append_cell_to_list((x - 1, y + 1), cellNeighbors)
-        return cellNeighbors
+        cell_neighbors = []
+        self.append_cell_to_list((x - 1, y - 1), cell_neighbors)
+        self.append_cell_to_list((x, y - 1), cell_neighbors)
+        self.append_cell_to_list((x - 1, y), cell_neighbors)
+        self.append_cell_to_list((x + 1, y + 1), cell_neighbors)
+        self.append_cell_to_list((x, y + 1), cell_neighbors)
+        self.append_cell_to_list((x + 1, y), cell_neighbors)
+        self.append_cell_to_list((x + 1, y - 1), cell_neighbors)
+        self.append_cell_to_list((x - 1, y + 1), cell_neighbors)
+        return cell_neighbors
 
-    def append_cell_to_list(self, point, listToAppendTo):
-        cellToAppend = self.get_cell(point)
-        if cellToAppend is None:
+    def append_cell_to_list(self, point, list_to_append_to):
+        cell_to_append = self.get_cell(point)
+        if cell_to_append is None:
             return
-        listToAppendTo.append(cellToAppend)
+        list_to_append_to.append(cell_to_append)
 
     def get_cell(self, point):
         if point[0] < 0 or point[1] < 0:
