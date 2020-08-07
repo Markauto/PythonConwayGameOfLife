@@ -1,15 +1,27 @@
 import sys
 import pygame
+import math
 
 import Grid
 
 pygame.init()
 
-size = width, height = 1024, 720
-black = 255, 255, 255
+screenSize = screenWidth, screenHeight = 1024, 720
+backGroundColour = 255, 255, 255
 theGrid = Grid.Grid()
 
-screen = pygame.display.set_mode(size)
+leftOverWidth = screenWidth % theGrid.cellSize[0]
+leftOverHeight = screenHeight % theGrid.cellSize[1]
+
+if leftOverWidth > 0:
+    theGrid.widthOffset = leftOverWidth / 2
+if leftOverHeight > 0:
+    theGrid.heightOffset = leftOverHeight / 2
+
+theGrid.width = screenWidth // theGrid.cellSize[0]
+theGrid.height = screenHeight // theGrid.cellSize[1]
+
+screen = pygame.display.set_mode(screenSize)
 theGrid.create_grid()
 
 simulate = False
@@ -31,7 +43,7 @@ while 1:
         except AttributeError:
             pass
 
-    screen.fill(black)
+    screen.fill(backGroundColour)
     theGrid.draw_grid(screen)
     pygame.display.flip()
 
