@@ -79,3 +79,8 @@ class Grid:
             return
 
         return self.cells[point[0]][point[1]]
+
+    def reset_grid(self):
+        for x in range(len(self.cells)):
+            for y in range(len(self.cells[x])):
+                self.cells[x][y].alive = False

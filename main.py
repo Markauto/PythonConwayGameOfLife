@@ -21,6 +21,8 @@ while 1:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 simulate = not simulate
+            if event.key == pygame.K_DELETE:
+                theGrid.reset_grid()
 
     if pygame.mouse.get_pressed()[0]:
         try:
