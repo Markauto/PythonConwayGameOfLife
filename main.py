@@ -36,12 +36,14 @@ while 1:
             if event.key == pygame.K_DELETE:
                 theGrid.reset_grid()
 
-    if pygame.mouse.get_pressed()[0]:
-        try:
-            pos = pygame.mouse.get_pos()
-            theGrid.check_for_cell_click(pos)
-        except AttributeError:
-            pass
+    mouse1Pressed = pygame.mouse.get_pressed()[0]
+    mouse2Pressed = pygame.mouse.get_pressed()[2]
+    try:
+        pos = pygame.mouse.get_pos()
+        if mouse1Pressed or mouse2Pressed:
+            theGrid.check_for_cell_click(pos, mouse1Pressed, mouse2Pressed)
+    except AttributeError:
+        pass
 
     screen.fill(backGroundColour)
     theGrid.draw_grid(screen)

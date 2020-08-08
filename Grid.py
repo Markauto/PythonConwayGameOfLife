@@ -31,11 +31,17 @@ class Grid:
             for cell in column:
                 cell.draw(surface)
 
-    def check_for_cell_click(self, point):
-        # Change this to use maths instead of looping round them all
-        for column in self.cells:
-            for cell in column:
-                cell.clicked(point)
+    def check_for_cell_click(self, point, primary, alt):
+        cellColumn = point[0] // self.cellSize[0]
+        cellRow = point[1] // self.cellSize[1]
+        cell = self.get_cell((cellColumn, cellRow))
+        if cell is None:
+            return
+
+        if alt:
+            cell.alt_click()
+        elif primary:
+            cell.clicked()
 
     def update_grid(self):
         time.sleep(.1)
