@@ -1,15 +1,15 @@
 import sys
 import pygame
-import math
 
 import Grid
+import ConwaysGameOfLifeController
 
 pygame.init()
 
 screenSize = screenWidth, screenHeight = 1024, 720
 backGroundColour = 255, 255, 255
 theGrid = Grid.Grid()
-
+FPS = 60
 leftOverWidth = screenWidth % theGrid.cellSize[0]
 leftOverHeight = screenHeight % theGrid.cellSize[1]
 
@@ -22,11 +22,13 @@ theGrid.width = screenWidth // theGrid.cellSize[0]
 theGrid.height = screenHeight // theGrid.cellSize[1]
 
 screen = pygame.display.set_mode(screenSize)
+clock = pygame.time.Clock()
 theGrid.create_grid()
-
+conwaysGameOfLifeController = ConwaysGameOfLifeController.ConwaysGameOfLifeController(theGrid)
 simulate = False
 
 while 1:
+    clock.tick(FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
@@ -40,8 +42,7 @@ while 1:
     mouse2Pressed = pygame.mouse.get_pressed()[2]
     try:
         pos = pygame.mouse.get_pos()
-        if mouse1Pressed or mouse2Pressed:
-            theGrid.check_for_cell_click(pos, mouse1Pressed, mouse2Pressed)
+        theGrid.cell_interaction(pos, mouse1Pressed, mouse2Pressed)
     except AttributeError:
         pass
 
@@ -50,4 +51,4 @@ while 1:
     pygame.display.flip()
 
     if simulate:
-        theGrid.update_grid()
+        conwaysGameOfLifeController.step()

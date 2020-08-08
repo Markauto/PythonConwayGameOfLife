@@ -31,34 +31,22 @@ class Grid:
             for cell in column:
                 cell.draw(surface)
 
-    def check_for_cell_click(self, point, primary, alt):
+    previousCellOver = Cell.Cell()
+
+    def cell_interaction(self, point, primary, alt):
+        self.previousCellOver.clear_hover()
         cellColumn = point[0] // self.cellSize[0]
         cellRow = point[1] // self.cellSize[1]
         cell = self.get_cell((cellColumn, cellRow))
         if cell is None:
             return
 
+        cell.hover()
+        self.previousCellOver = cell
         if alt:
             cell.alt_click()
         elif primary:
             cell.clicked()
-
-    def update_grid(self):
-        time.sleep(.1)
-        for x in range(len(self.cells)):
-            for y in range(len(self.cells[x])):
-                cell_neighbors = self.get_cell_neighbors((x, y))
-                cell = self.cells[x][y]
-                number_of_alive_neighbors = len([aliveNeighbor for aliveNeighbor in cell_neighbors if aliveNeighbor.alive])
-                if number_of_alive_neighbors < 2:
-                    cell.alive = False
-                    continue
-                if number_of_alive_neighbors > 3:
-                    cell.alive = False
-                    continue
-                if not cell.alive and number_of_alive_neighbors == 3:
-                    cell.alive = True
-                    continue
 
     def get_cell_neighbors(self, point):
         x = point[0]

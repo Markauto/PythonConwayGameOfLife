@@ -4,11 +4,14 @@ import pygame
 class Cell:
     alive = False
     colour = (0, 0, 0)
-    rectWidth = 3
+    rectWidth = 1
     rectangle = pygame.rect.Rect(0, 0, 0, 0)
 
     def hover(self):
         self.colour = (255, 0, 0)
+
+    def clear_hover(self):
+        self.colour = (0, 0, 0)
 
     def clicked(self):
         self.alive = True
@@ -20,6 +23,6 @@ class Cell:
         if self.alive:
             self.rectWidth = 0
         else:
-            self.rectWidth = 3
+            self.rectWidth = 1
 
         pygame.draw.rect(surface, self.colour, self.rectangle, self.rectWidth)
